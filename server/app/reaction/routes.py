@@ -5,7 +5,6 @@ from flask_login import current_user, login_required
 
 reactions = Blueprint("reactions", __name__, url_prefix="/api")
 
-
 @reactions.route("/reactions/post/<post_id>", methods=["PATCH"])
 @login_required
 def update_reaction_post(post_id):
