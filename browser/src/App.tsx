@@ -165,4 +165,90 @@ const SubThread: React.FC = () => <SimplePage title="Sub-Thread Page" route="/t/
 const Login: React.FC = () => <SimplePage title="Login Page" route="/login" />;
 const Register: React.FC = () => <SimplePage title="Register Page" route="/register" />;
 
+// ROUTER CONFIGURATION
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <AppLayout />,
+        errorElement: <Error />,
+        children: [
+            {
+                path: "/",
+                element: <FeedLayout />,
+                children: [
+                    {
+                        path: "/",
+                        element: <Navigate to="/all" replace />,
+                    },
+                    {
+                        path: "/:feedName",
+                        element: <Feed />,
+                    },
+                    {
+                        path: "/post/:postId",
+                        element: <FullPost />,
+                    },
+                ],
+            },
+            {
+                path: "/u/:username",
+                element: <Profile />,
+            },
+            {
+                path: "/t/:threadName",
+                element: <SubThread />,
+            },
+            {
+                path: "/saved",
+                element: (
+                    <RequireAuth>
+                        <SavedPosts />
+                    </RequireAuth>
+                ),
+            },
+            {
+                path: "/inbox",
+                element: (
+                    <RequireAuth>
+                        <Inbox />
+                    </RequireAuth>
+                ),
+            },
+        ],
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/register",
+        element: <Register />,
+    },
+]);
 
+// QUERY CLIENT SETUP
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 120000, 
+        },
+    },
+});
+
+// MAIN APPLICATION COMPONENT
+
+export function App() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            {/* ReactQueryDevtools is intentionally omitted as it relies on external imports */}
+            <AuthProvider>
+                <Suspense fallback={<Loader />}>
+                    <RouterProvider router={router} fallbackElement={<Loader />} />
+                </Suspense>
+            </AuthProvider>
+        </QueryClientProvider>
+    );
+}
+
+export default App;
