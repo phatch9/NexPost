@@ -101,3 +101,68 @@ const RequireAuth: React.FC<WrapperProps> = ({ children }) => {
     return <>{children}</>;
 };
 
+/* AppLayout (Main structure that wraps the primary routes) */
+const AppLayout: React.FC = () => {
+    const { isAuthenticated, user } = useContext(AuthContext);
+    const location = useLocation();
+
+    // Determine current path for simple navigation display
+    const path = location.pathname.split('/')[1] || 'Home (All)';
+    
+    return (
+        <div className="min-h-screen bg-gray-100 flex flex-col">
+            <header className="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-10">
+                <h1 className="text-2xl font-bold text-blue-600">Threaddit <span className="text-sm text-gray-500">({path.toUpperCase()})</span></h1>
+                <nav className="space-x-4 text-sm font-medium">
+                    <a href="/all" className="text-gray-600 hover:text-blue-500">Home</a>
+                    {isAuthenticated && user ? (
+                        <>
+                            <a href="/saved" className="text-gray-600 hover:text-blue-500">Saved</a>
+                            <a href={`/u/${user.username}`} className="text-gray-600 hover:text-blue-500">Profile</a>
+                            <a href="/inbox" className="text-gray-600 hover:text-blue-500">Inbox</a>
+                        </>
+                    ) : (
+                        <a href="/login" className="text-blue-600 border border-blue-600 px-3 py-1 rounded hover:bg-blue-50">Login</a>
+                    )}
+                </nav>
+            </header>
+            <main className="flex-grow p-4">
+                <Outlet /> {/* Renders the current child route */}
+            </main>
+        </div>
+    );
+};
+
+/** MOCK: FeedLayout (Layout for the main feed) */
+const FeedLayout: React.FC = () => (
+    <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-white rounded-xl shadow p-4 min-h-[50vh]">
+            <h2 className="text-xl font-semibold mb-4 border-b pb-2">Feed Content Area</h2>
+            <Outlet />
+        </div>
+        <aside className="md:col-span-1 bg-white rounded-xl shadow p-4">
+            <h3 className="font-semibold text-lg mb-3 text-gray-700">Sidebar (MOCK)</h3>
+            <p className="text-sm text-gray-500">This area is for widgets and navigation.</p>
+        </aside>
+    </div>
+);
+
+// PAGE MOCKS
+const SimplePage: React.FC<SimplePageProps> = ({ title, route }) => (
+    <div className="p-6 bg-white rounded-lg shadow-md border border-l-4 border-blue-500">
+        <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+        <p className="mt-2 text-gray-600">This is the mock component for the <code className="bg-gray-200 p-1 rounded text-sm">{route}</code> route.</p>
+    </div>
+);
+
+// Defined all the lazy components as simple functional components
+const Feed: React.FC = () => <SimplePage title="Main Feed" route="/:feedName" />;
+const Profile: React.FC = () => <SimplePage title="User Profile" route="/u/:username" />;
+const FullPost: React.FC = () => <SimplePage title="Full Post View" route="/post/:postId" />;
+const Inbox: React.FC = () => <SimplePage title="User Inbox" route="/inbox" />;
+const SavedPosts: React.FC = () => <SimplePage title="Saved Posts" route="/saved" />;
+const SubThread: React.FC = () => <SimplePage title="Sub-Thread Page" route="/t/:threadName" />;
+const Login: React.FC = () => <SimplePage title="Login Page" route="/login" />;
+const Register: React.FC = () => <SimplePage title="Register Page" route="/register" />;
+
+
