@@ -52,12 +52,12 @@ def not_found(e):
 
 
 # noqa
-from reddis.users.routes import user
-from reddis.subthreads.routes import threads
-from reddis.posts.routes import posts
-from reddis.comments.routes import comments
-from reddis.reactions.routes import reactions
-from reddis.messages.routes import messages
+from app.user.routes import user
+from app.subpost.routes import threads
+from app.posts.routes import posts
+from app.comments.routes import comments
+from app.reaction.routes import reactions
+from app.messages.routes import messages
 
 app.register_blueprint(user)
 app.register_blueprint(threads)
