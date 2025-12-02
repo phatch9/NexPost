@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AxiosError } from 'axios'; // We assume Axios is installed and its types are available
-import Loader from "../../components/Loader.tsx";
+import Loader from "../../components/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import AuthConsumer from "../../components/AuthContext.tsx";
-import AppLogo from "../../components/AppLogo.tsx";
+import useAuth from "../../components/AuthContext";
+import { AppLogo } from "../../components/Navbar";
+import Svg from "../../components/Svg";
 
 // Mock Types for useMutation
 // Define the expected successful data structure from the API (Same as login)
@@ -64,45 +65,7 @@ function useMutation<TData, TError>(options: {
 
     return { mutate, status, error: error as TError | null, reset };
 }
-
-// Mock AuthContext
-interface AuthContextType {
-    isAuthenticated: boolean;
-    login: (userData: AuthResponseData) => void;
-}
-
-const AuthConsumer = (): AuthContextType => ({
-    isAuthenticated: false,
-    login: (userData: AuthResponseData) => {
-        console.log('Mock Login: User authenticated with data:', userData);
-    },
-});
-
-// Mock Components
-const useNavigate = () => (path: string) => console.log(`Navigating to: ${path}`);
-const Link: React.FC<React.PropsWithChildren<{ to: string, className: string }>> = ({ children, to, className }) => (
-    <a href={to} className={className} onClick={(e) => { e.preventDefault(); console.log(`Link clicked to: ${to}`); }}>
-        {children}
-    </a>
-);
-
-const Loader: React.FC<{ forPosts: boolean }> = () => <div className="animate-spin text-theme-orange">Loading...</div>;
-const AppLogo: React.FC<React.PropsWithChildren<{ forBanner?: boolean }>> = ({ children }) => (
-    <div className='flex items-center space-x-2'>
-        <span className='text-3xl font-extrabold text-theme-orange'>&#9733;</span>
-        {children}
-    </div>
-);
-const Svg: React.FC<{ type: 'eye-open' | 'eye-close' | 'arrow-right', className: string, onClick?: (e: React.MouseEvent<SVGSVGElement>) => void }> = ({ type, className, onClick }) => {
-    const icon = type === 'eye-open' ? '👁️' : type === 'eye-close' ? '🔒' : '👉';
-    return (
-        <svg className={className} onClick={onClick}>
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fontSize="20">{icon}</text>
-        </svg>
-    );
-};
-
-// END MOCK
+// Using real components from the `components` directory (no mocks)
 
 export function Signup() {
     // State Typing
@@ -112,7 +75,7 @@ export function Signup() {
     const [password, setPassword] = useState<string>("");
 
     // Hook Usage
-    const { isAuthenticated, login } = AuthConsumer();
+    const { isAuthenticated, login } = useAuth();
     const navigate = useNavigate();
 
     // useMutation Typing: Using RegisterError for validation handling
