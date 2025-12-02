@@ -57,10 +57,10 @@ export function Inbox() {
   // Set tab title
   useEffect(() => {
     if (curChat) document.title = `Inbox | ${curChat.username}`;
-    else document.title = "Threaddit | Inbox";
+    else document.title = "Reddot | Inbox";
 
     return () => {
-      document.title = "Threaddit";
+      document.title = "Reddot";
     };
   }, [curChat]);
 
