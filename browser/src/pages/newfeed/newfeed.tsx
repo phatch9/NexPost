@@ -16,7 +16,7 @@ interface FeedParams {
  * The Feed component displays a list of posts based on the feedName parameter (e.g., 'popular', 'all', or 'home').
  * It handles redirection if an unauthenticated user attempts to access the 'home' feed.
  */
-export const Feed: FC = () => {
+export const NewFeed: FC = () => {
   // Type the consumed context values. We explicitly state that isAuthenticated is a boolean.
     const { isAuthenticated }: { isAuthenticated: boolean } = AuthConsumer();
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ export const Feed: FC = () => {
         ? feedName.charAt(0).toUpperCase() + feedName.slice(1)
         : 'All';
 
-    document.title = `Threaddit | ${titleSegment}`;
+    document.title = `Reddot | ${titleSegment}`;
     }, [feedName]);
 
     // Determine the current feed name for the API calls, defaulting to 'all'.
@@ -52,4 +52,4 @@ export const Feed: FC = () => {
     );
 };
 
-export default Feed;
+export default NewFeed;
