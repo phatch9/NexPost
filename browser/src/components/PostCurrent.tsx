@@ -13,7 +13,7 @@ const Vote = ({ initialCount, type }: any) => (
 );
 
 // Simple PostMoreOptions component that uses queryClient if available
-const PostMoreOptions = ({ creatorInfo, threadInfo, currentUser, postInfo, setShowModal, setModalData, handleShare }: any) => {
+const PostOptions = ({ creatorInfo, PostInfo, currentUser, postInfo, setShowModal, setModalData, handleShare }: any) => {
     // In this lightweight stub we don't use a query client; the real app provides caching via QueryClientProvider.
     const queryClient: any = null;
 
@@ -73,7 +73,7 @@ const copyToClipboard = (text: any) => {
     }
 };
 
-export function Post({ post = {} as any, isExpanded = false, postIndex = 0, setCommentMode = (prev: any) => {} }) {
+export function PostCurrent({ post = {} as any, isExpanded = false, postIndex = 0, setCommentMode = (prev: any) => {} }) {
     const { isAuthenticated } = { isAuthenticated: true };
     const vidRef = useRef(null);
     const [modalShow, setShowModal] = useState(false);
@@ -83,10 +83,10 @@ export function Post({ post = {} as any, isExpanded = false, postIndex = 0, setC
 
     useEffect(() => {
         if (isExpanded) {
-            document.title = postTitle || "Threaddit Post";
+            document.title = postTitle || "Reddot Post";
         }
         return () => {
-            if (isExpanded) document.title = "Threaddit";
+            if (isExpanded) document.title = "Reddot";
         };
     }, [isExpanded, postTitle]);
 
@@ -132,7 +132,7 @@ export function Post({ post = {} as any, isExpanded = false, postIndex = 0, setC
                         </h2>
                         <div className="flex items-center space-x-2">
                             <span className="text-xs text-gray-500">{createdAt.toLocaleString()}</span>
-                            <PostMoreOptions
+                            <PostOptions
                                 creatorInfo={(post as any)?.creator}
                                 threadInfo={(post as any)?.thread}
                                 currentUser={{}}
@@ -179,4 +179,4 @@ export function Post({ post = {} as any, isExpanded = false, postIndex = 0, setC
     );
 }
 
-export default Post;
+export default PostCurrent;
