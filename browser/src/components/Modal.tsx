@@ -3,12 +3,12 @@ import { FC, useRef, ReactNode } from "react";
 import useEventListener from "../hooks/useEventListener";
 
 // Type Definitions
-interface ModelProps {
+interface ModalProps {
     children: ReactNode;
-    setShowModel?: (show: boolean) => void;
+    setShowModal?: (show: boolean) => void;
 }
 
-// Model Component
+// Modal Component
 
 /*  A modal component that displays its children in a centered overlay.
     It includes a backdrop that closes the modal when clicked outside the content area.
@@ -18,16 +18,16 @@ interface ModelProps {
     - children: The content to display inside the modal.
     */
 
-export const Model: FC<ModelProps> = ({ children, setShowModel }) => {
+export const Modal: FC<ModalProps> = ({ children, setShowModal }) => {
     const backdropRef = useRef<HTMLDivElement>(null);
-    // Close model on backdrop click
+    // Close modal on backdrop click
     useEventListener ("click", (e:Event) => {
-        if (e.target === backdropRef.current && setShowModel) {
-            setShowModel(false);
+        if (e.target === backdropRef.current && setShowModal) {
+            setShowModal(false);
         }
-    // Close model on "Escape" key press
-    if (e instanceof KeyboardEvent && e.key === "Escape" && setShowModel) {
-        setShowModel(false); }
+    // Close modal on "Escape" key press
+    if (e instanceof KeyboardEvent && e.key === "Escape" && setShowModal) {
+        setShowModal(false); }
     },
     document // Ensure the listener added to the document
 );
@@ -51,4 +51,4 @@ export const Model: FC<ModelProps> = ({ children, setShowModel }) => {
         </motion.div>
     );
 };
-export default Model;
+export default Modal;

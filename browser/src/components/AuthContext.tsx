@@ -128,7 +128,7 @@
     );
     }
 
-    // -- Custom Hook for Context Consumption --
+    // Custom Hook for Context Consumption
     /**
      * Hook to access the authentication context values and functions.
      * @returns {AuthContextValue} The authentication state and methods.
