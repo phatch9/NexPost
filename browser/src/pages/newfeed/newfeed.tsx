@@ -1,8 +1,8 @@
 import { useEffect, FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// Note: Assuming AuthConsumer is a custom hook/consumer function that returns the auth context.
-import AuthConsumer from "../../components/AuthContext";
-import InfinitePostsLayout from "./components/InfinitePosts";
+// Note: Assuming useAuth is a custom hook/consumer function that returns the auth context.
+import useAuth from "../../components/AuthContext";
+import InfinitePostsLayout from "../../components/InfinitePosts";
 
 /**
  * Defines the structure of the route parameters expected by this component.
@@ -16,9 +16,9 @@ interface FeedParams {
  * The Feed component displays a list of posts based on the feedName parameter (e.g., 'popular', 'all', or 'home').
  * It handles redirection if an unauthenticated user attempts to access the 'home' feed.
  */
-export const NewFeed: FC = () => {
+export const Feed: FC = () => {
   // Type the consumed context values. We explicitly state that isAuthenticated is a boolean.
-    const { isAuthenticated }: { isAuthenticated: boolean } = AuthConsumer();
+    const { isAuthenticated }: { isAuthenticated: boolean } = useAuth();
     const navigate = useNavigate();
 
   // Use a type assertion to correctly type the parameters retrieved from the URL.
@@ -52,4 +52,4 @@ export const NewFeed: FC = () => {
     );
 };
 
-export default NewFeed;
+export default Feed;
