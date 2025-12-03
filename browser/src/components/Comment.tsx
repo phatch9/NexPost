@@ -3,8 +3,8 @@ import Markdown from "markdown-to-jsx";
 import { FC, useRef, useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";;
 import useComment from "../hooks/useComment";
-import { timeAgo } from "../pages/fullPost/utils";
-import { useAuth } from "./AuthContext";
+import { timeAgo } from "../pages/Post/utils";
+import useAuth from "./../components/AuthContext";
 import Svg from "./Svg";
 import Vote from "./Vote";
 
@@ -316,7 +316,7 @@ return (
         if (isAuthenticated) {
             callBackSubmit(content);
         } else {
-            console.error("User must be logged in to comment.");
+            console.error("User must be logged in to share the comment.");
             // In a real app, trigger a login modal
         }
         }}>
