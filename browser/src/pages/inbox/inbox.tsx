@@ -4,14 +4,13 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import avatar from "../../assets/avatar.png";
-import AuthConsumer from "../../components/AuthContext";
+import useAuth from "../../components/AuthContext";
 import Svg from "../../components/Svg";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
 
 // Types and definition
 // -------------------------
-
 export interface User {
   avatar?: string;
   name?: string;
@@ -42,7 +41,6 @@ interface MessageProps {
 
 // Inbox Component
 // -------------------------
-
 export function Inbox() {
   const [curChat, setCurChat] = useState<User | false>(false);
 
@@ -50,7 +48,8 @@ export function Inbox() {
     queryKey: ["inbox"],
     queryFn: async () => {
       const res = await axios.get("/api/messages/inbox");
-      return res.data;
+      // Ensure the response is an array of MessageType
+      return Array.isArray(res.data) ? res.data as MessageType[] : [];
     },
   });
 
@@ -73,7 +72,7 @@ export function Inbox() {
             <h1 className="text-2xl font-semibold text-blue-600">Messages</h1>
           </div>
 
-          {data?.map((message) => (
+          {(data ?? []).map((message) => (
             <li
               key={message.message_id}
               onClick={() => setCurChat(message.sender)}
@@ -171,7 +170,7 @@ export function Inbox() {
 export function Chat({ sender, setCurChat, newChat = false }: ChatProps) {
   const myRef = useRef<HTMLLIElement | null>(null);
   const queryClient = useQueryClient();
-  const { user } = AuthConsumer();
+  const { user } = useAuth();
   const [message, setMessage] = useState("");
 
   const { data, isFetching } = useQuery<MessageType[]>({
@@ -311,7 +310,6 @@ export function Chat({ sender, setCurChat, newChat = false }: ChatProps) {
 
 // Message Bubble
 // -------------------------
-
 function Message({ message, toUser, messageIndex }: MessageProps) {
   const sentDate = new Date(message.created_at);
 
