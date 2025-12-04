@@ -4,7 +4,7 @@ from flask_marshmallow import Marshmallow
 from marshmallow import ValidationError
 import cloudinary
 from flask_login import LoginManager
-from server.app.config import (
+from app.config import (
     DATABASE_URI,
     SECRET_KEY,
     CLOUDINARY_API_SECRET,
