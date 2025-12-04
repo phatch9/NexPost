@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 const Feed: React.FC = () => <div className="p-6">Main Feed (placeholder)</div>;
 const Profile: React.FC = () => <div className="p-6">Profile (placeholder)</div>;
 const Login: React.FC = () => <div className="p-6">Login (placeholder)</div>;
-const Register: React.FC = () => <div className="p-6">Register (placeholder)</div>;
+const Signup: React.FC = () => <div className="p-6">Sign Up (placeholder)</div>;
 
 export function App(): JSX.Element {
   return (
@@ -25,7 +25,7 @@ export function App(): JSX.Element {
             <Route path="/all" element={<Feed />} />
             <Route path="/u/:username" element={<Profile />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
