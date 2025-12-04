@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from app.reaction.models import Reactions
+from app.reactions.models import Reactions
 from flask_login import current_user, login_required
 
 reactions = Blueprint("reactions", __name__, url_prefix="/api")
