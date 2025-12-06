@@ -7,14 +7,14 @@ import { AxiosError } from 'axios';
 // Mock Types for useMutation (The core of the TS conversion)
 // Define the expected successful data structure from the API
 interface LoginResponseData {
-  token: string;
-  userId: string;
+    token: string;
+    userId: string;
   // Add any other user properties returned by the API
 }
 
 // Define the expected error structure from the API response body
 interface ErrorResponseBody {
-  message: string;
+    message: string;
 }
 
 // Mock the useMutation hook
@@ -135,9 +135,9 @@ export function Login() {
     });
 
     useEffect(() => {
-        document.title = "Threaddit | Login";
+        document.title = "Reddot | Login";
         return () => {
-            document.title = "Threaddit";
+            document.title = "Reddot";
         }
     }, []);
 
@@ -161,16 +161,16 @@ export function Login() {
     return (
         <div className="flex justify-center items-center min-h-screen md:space-x-10 bg-gray-50 font-inter">
             <AppLogo forBanner={true}>
-                <h1 className="hidden font-mono text-4xl font-bold tracking-tight text-gray-800 md:block">Threaddit</h1>
+                <h1 className="hidden font-mono text-4xl font-bold tracking-tight text-gray-800 md:block">Reddot</h1>
             </AppLogo>
             <div className="flex flex-col p-8 py-10 space-y-8 bg-white rounded-xl shadow-2xl w-full max-w-sm">
                 <div className="flex justify-center md:hidden">
                     <AppLogo>
-                        <h1 className="font-mono text-3xl font-bold tracking-tight text-gray-800">Threaddit</h1>
+                        <h1 className="font-mono text-3xl font-bold tracking-tight text-gray-800">Reddot</h1>
                     </AppLogo>
                 </div>
                 <h1
-                    className={`text-center transition-all duration-300 ${status !== "loading" ? "text-2xl" : "text-xl"} tracking-wide 
+                    className={`text-center transition-all duration-300 ${status !== "loading" ? "text-2xl" : "text-xl"} tracking-wide
                         ${error ? "font-extrabold uppercase text-red-600" : "font-semibold text-gray-700"}`}
                 >
                     {/* Access error message safely using optional chaining */}
@@ -228,7 +228,7 @@ export function Login() {
                             type="arrow-right"
                             className="w-5 h-5 ml-1 transition-transform duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 text-theme-orange"></Svg>
                     </Link>
-                    <Link to="/register" className="flex items-center font-medium cursor-pointer group text-gray-600 hover:text-theme-orange transition-colors">
+                    <Link to="/signup" className="flex items-center font-medium cursor-pointer group text-gray-600 hover:text-theme-orange transition-colors">
                         Signup
                         <Svg
                             type="arrow-right"
