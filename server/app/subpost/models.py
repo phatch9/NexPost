@@ -16,8 +16,6 @@ class Subpost(db.Model):
     user_role = db.relationship("UserRole", back_populates="subpost")
     subscription = db.relationship("Subscription", back_populates="subpost")
     subpost_info = db.relationship("SubpostInfo", back_populates="subpost")
-    post = db.relationship("Posts", back_populates="subpost")
-    post_info = db.relationship("PostInfo", back_populates="subpost")
 
     @classmethod
     def add(cls, form_data, image, created_by):
@@ -59,8 +57,8 @@ class Subpost(db.Model):
             "description": self.description,
             "created_at": self.created_at,
             "logo": self.logo,
-            "PostsCount": len(self.post),
-            "CommentsCount": sum([len(p.comment) for p in self.post]),
+            "PostsCount": len(self.subpost),
+            "CommentsCount": sum([len(p.comment) for p in self.subpost]),
             "created_by": self.user.username if self.user else None,
             "subscriberCount": len(self.subscription),
             "modList": [r.user.username for r in self.user_role if r.role.slug == "mod"],
