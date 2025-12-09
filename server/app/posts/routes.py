@@ -1,14 +1,14 @@
 from flask import Blueprint, jsonify, request
 from app import db
 from flask_login import current_user, login_required
-from app.posts.modelPost import (
+from app.posts.models import (
     PostInfo,
     Posts,
     PostValidator,
     get_filters,
     SavedPosts,
 )
-from app.subpost.models import Subscription, subpostInfo
+from app.subpost.models import Subscription, SubpostInfo
 
 posts = Blueprint("posts", __name__, url_prefix="/api")
 
