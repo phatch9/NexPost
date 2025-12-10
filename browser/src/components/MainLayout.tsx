@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import Sidebar from '../components/Sidebar';
+import ReddotSidebar from './ReddotSidebar';
 
 const MainLayout: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const MainLayout: React.FC = () => {
               <Outlet />
             </main>
             <aside className="w-full md:w-1/3 lg:w-1/4">
-              <Sidebar />
+              <ReddotSidebar />
             </aside>
           </div>
         </div>
