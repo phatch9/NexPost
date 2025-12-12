@@ -20,7 +20,7 @@ const PostOptions = ({ creatorInfo, PostInfo, currentUser, postInfo, setShowModa
     const { isAuthenticated, user } = { isAuthenticated: true, user: { username: 'mockuser', roles: ['user'], mod_in: [] as any } };
     const [expand, setExpand] = useState(false);
     const isCreator = creatorInfo?.user_name === user.username;
-    const shouldBeAbleToDelete = isCreator || (user.roles.includes("mod") && user.mod_in.includes(threadInfo?.thread_id as any));
+    const shouldBeAbleToDelete = isCreator || (user.roles.includes("mod") && user.mod_in.includes(postInfo?.post_id as any));
 
     const handleSaved = () => {
         if (!isAuthenticated) { return setShowModal(true); }
@@ -83,10 +83,10 @@ export function PostCurrent({ post = {} as any, isExpanded = false, postIndex = 
 
     useEffect(() => {
         if (isExpanded) {
-            document.title = postTitle || "Reddot Post";
+            document.title = postTitle || "NexPost Post";
         }
         return () => {
-            if (isExpanded) document.title = "Reddot";
+            if (isExpanded) document.title = "NexPost";
         };
     }, [isExpanded, postTitle]);
 
