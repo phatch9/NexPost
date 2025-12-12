@@ -182,26 +182,25 @@ class PostValidator(ma.SQLAlchemySchema):
 
 def get_filters(sortby, duration):
     sortBy, durationBy = None, None
-    match sortby:
-        case "top":
-            sortBy = PostInfo.post_karma.desc()
-        case "new":
-            sortBy = PostInfo.created_at.desc()
-        case "hot":
-            sortBy = PostInfo.comments_count.desc()
-        case _:
-            raise Exception("Invalid Sortby Request")
-    match duration:
-        case "day":
-            durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=1), datetime.now())
-        case "week":
-            durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=7), datetime.now())
-        case "month":
-            durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=30), datetime.now())
-        case "year":
-            durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=365), datetime.now())
-        case "alltime":
-            durationBy = True
-        case _:
-            raise Exception("Invalid Duration Request")
+    if sortby == "top":
+        sortBy = PostInfo.post_karma.desc()
+    elif sortby == "new":
+        sortBy = PostInfo.created_at.desc()
+    elif sortby == "hot":
+        sortBy = PostInfo.comments_count.desc()
+    else:
+        raise Exception("Invalid Sortby Request")
+    
+    if duration == "day":
+        durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=1), datetime.now())
+    elif duration == "week":
+        durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=7), datetime.now())
+    elif duration == "month":
+        durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=30), datetime.now())
+    elif duration == "year":
+        durationBy = PostInfo.created_at.between(datetime.now() - timedelta(days=365), datetime.now())
+    elif duration == "alltime":
+        durationBy = True
+    else:
+        raise Exception("Invalid Duration Request")
     return sortBy, durationBy
