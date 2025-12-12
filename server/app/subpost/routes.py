@@ -8,11 +8,11 @@ from app import db
 from app.auth.auth import auth_role
 import re
 
-posts = Blueprint("subposts", __name__, url_prefix="/api")
-post_name_regex = re.compile(r"^\w{3,}$")
+subposts = Blueprint("subposts", __name__, url_prefix="/api")
+subpost_name_regex = re.compile(r"^\w{3,}$")
 
 
-@posts.route("/subposts", methods=["GET"])
+@subposts.route("/subposts", methods=["GET"])
 def get_subposts():
     limit = request.args.get("limit", default=10, type=int)
     offset = request.args.get("offset", default=0, type=int)
@@ -23,7 +23,7 @@ def get_subposts():
             subscription.subpost.as_dict(cur_user)
             for subscription in Subscription.query.filter_by(user_id=current_user.id).limit(limit).offset(offset).all()
         ]
-    all_posts = [
+    all_subposts = [
         subinfo.as_dict()
         for subinfo in SubpostInfo.query.filter(SubpostInfo.members_count.is_not(None))
         .order_by(SubpostInfo.members_count.desc())
@@ -43,7 +43,7 @@ def get_subposts():
         jsonify(
             {
                 "subscribed": subscribed_posts,
-                "all": all_posts,
+                "all": all_subposts,
                 "popular": popular_posts,
             }
         ),
@@ -51,7 +51,7 @@ def get_subposts():
     )
 
 
-@posts.route("/subposts/search", methods=["GET"])
+@subposts.route("/subposts/search", methods=["GET"])
 def subpost_search():
     post_name = request.args.get("name", default="", type=str)
     post_name = f"%{post_name}%"
@@ -61,13 +61,13 @@ def subpost_search():
     return jsonify(subpost_list), 200
 
 
-@posts.route("/subposts/get/all")
+@subposts.route("/subposts/get/all")
 def get_all_post():
-    posts = Subpost.query.order_by(Subpost.name).all()
-    return jsonify([t.as_dict() for t in posts]), 200
+    subposts = Subpost.query.order_by(Subpost.name).all()
+    return jsonify([t.as_dict() for t in subposts]), 200
 
 
-@posts.route("/subposts/<post_name>")
+@subposts.route("/subposts/<post_name>")
 def get_post_by_name(post_name):
     post_info = SubpostInfo.query.filter_by(name=f"t/{post_name}").first()
     subpost = Subpost.query.filter_by(name=f"t/{post_name}").first()
@@ -84,14 +84,14 @@ def get_post_by_name(post_name):
     )
 
 
-@posts.route("subposts/subscription/<tid>", methods=["POST"])
+@subposts.route("subposts/subscription/<tid>", methods=["POST"])
 @login_required
 def new_subscription(tid):
     Subscription.add(tid, current_user.id)
     return jsonify({"message": "Subscribed"}), 200
 
 
-@posts.route("subposts/subscription/<tid>", methods=["DELETE"])
+@subposts.route("subposts/subscription/<tid>", methods=["DELETE"])
 @login_required
 def del_subscription(tid):
     subscription = Subscription.query.filter_by(user_id=current_user.id, subpost_id=tid).first()
@@ -103,7 +103,7 @@ def del_subscription(tid):
     return jsonify({"message": "UnSubscribed"}), 200
 
 
-@posts.route("/subpost", methods=["POST"])
+@subposts.route("/subpost", methods=["POST"])
 @login_required
 def new_post():
     image = request.files.get("media")
@@ -117,28 +117,28 @@ def new_post():
     return jsonify({"message": "Something went wrong"}), 500
 
 
-@posts.route("/subpost/<tid>", methods=["PATCH"])
+@subposts.route("/subpost/<tid>", methods=["PATCH"])
 @login_required
 @auth_role(["admin", "mod"])
 def update_post(tid):
-    post = Subpost.query.filter_by(id=tid).first()
-    if not post:
+    subpost = Subpost.query.filter_by(id=tid).first()
+    if not subpost:
         return jsonify({"message": "Invalid Post"}), 400
     image = request.files.get("media")
     form_data = request.form.to_dict()
-    post.patch(form_data, image)
+    subpost.patch(form_data, image)
     return (
         jsonify(
             {
                 "message": "Post updated",
-                "new_data": {"postData": post.as_dict(current_user.id if current_user.is_authenticated else None)},
+                "new_data": {"postData": subpost.as_dict(current_user.id if current_user.is_authenticated else None)},
             }
         ),
         200,
     )
 
 
-@posts.route("/subpost/mod/<tid>/<username>", methods=["PUT"])
+@subposts.route("/subpost/mod/<tid>/<username>", methods=["PUT"])
 @login_required
 @auth_role(["admin", "mod"])
 def new_mod(tid, username):
@@ -149,14 +149,14 @@ def new_mod(tid, username):
     return jsonify({"message": "Invalid User"}), 400
 
 
-@posts.route("/subpost/mod/<tid>/<username>", methods=["DELETE"])
+@subposts.route("/subpost/mod/<tid>/<username>", methods=["DELETE"])
 @login_required
 @auth_role(["admin", "mod"])
 def delete_mod(tid, username):
     user = User.query.filter_by(username=username).first()
-    post = Subpost.query.filter_by(id=tid).first()
-    if user and post:
-        if post.created_by == user.id and not current_user.has_role("admin"):
+    subpost = Subpost.query.filter_by(id=tid).first()
+    if user and subpost:
+        if subpost.created_by == user.id and not current_user.has_role("admin"):
             return jsonify({"message": "Cannot Remove Post Creator"}), 400
         UserRole.query.filter_by(user_id=user.id, subpost_id=tid).delete()
         db.session.commit()

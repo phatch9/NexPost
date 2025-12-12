@@ -6,7 +6,7 @@ from app.user.models import (
     UserRegisterValidator,
     User,
 )
-from app.auth.decorators import auth_role
+from app.auth.auth import auth_role
 from bcrypt import hashpw, checkpw, gensalt
 from flask_login import login_user, logout_user, current_user, login_required
 
