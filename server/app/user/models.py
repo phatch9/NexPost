@@ -5,7 +5,7 @@ from app import db, login_manager, app
 from flask_login import UserMixin
 from app import ma, app
 from flask_marshmallow.fields import fields
-from marshmallow.exceptions import ValidationError
+from marshmallow import ValidationError
 
 
 @login_manager.user_loader
@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     avatar: str = db.Column(db.Text)
     bio: str = db.Column(db.Text)
     registration_date = db.Column(db.DateTime(timezone=True), nullable=False, default=db.func.now())
-    subthread = db.relationship("Subthread", back_populates="user")
+    subpost = db.relationship("SubPost", back_populates="user")
     user_role = db.relationship("UserRole", back_populates="user")
     subscription = db.relationship("Subscription", back_populates="user")
     user_karma = db.relationship("UsersKarma", back_populates="user")
@@ -81,7 +81,7 @@ class User(db.Model, UserMixin):
                 "registrationDate": self.registration_date,
                 "roles": list({r.role.slug for r in self.user_role}),
                 "karma": self.user_karma[0].as_dict(),
-                "mod_in": [r.subthread_id for r in self.user_role if r.role.slug == "mod"],
+                "mod_in": [r.subpost_id for r in self.user_role if r.role.slug == "mod"],
             }
             if not include_all
             else {"id": self.id, "email": self.email, **self.as_dict()}
@@ -90,12 +90,12 @@ class User(db.Model, UserMixin):
 
 def username_validator(username: str):
     if db.session.query(User).filter(func.lower(User.username) == username.lower()).first():
-        raise ValidationError("Username already exists")
+        raise ValidationError("This username already exists")
 
 
 def email_validator(email: str):
     if User.query.filter_by(email=email).first():
-        raise ValidationError("Email already exists")
+        raise ValidationError("This email already exists")
 
 
 class UserLoginValidator(ma.SQLAlchemySchema):
@@ -113,7 +113,7 @@ class UserRegisterValidator(ma.SQLAlchemySchema):
     username = fields.Str(
         required=True,
         validate=[
-            fields.validate.Length(min=4, max=15, error="Username must be between 1 and 50 characters"),
+            fields.validate.Length(min=4, max=15, error="The username must be between 1 and 50 characters"),
             fields.validate.Regexp(
                 "^[a-zA-Z][a-zA-Z0-9_]*$",
                 error="Username must start with a letter, and contain only \
