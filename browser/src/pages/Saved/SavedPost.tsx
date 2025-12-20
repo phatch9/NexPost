@@ -3,9 +3,9 @@ import InfinitePosts from "../../components/InfinitePosts";
 
 export default function SavedPosts() {
     useEffect(() => {
-        document.title = "Reddot | saved";
+        document.title = "NexPost | saved";
         return () => {
-            document.title = "Reddot";
+            document.title = "NexPost";
         };
     }, []);
 

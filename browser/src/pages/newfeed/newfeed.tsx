@@ -38,7 +38,7 @@ export const Feed: FC = () => {
         ? feedName.charAt(0).toUpperCase() + feedName.slice(1)
         : 'All';
 
-    document.title = `Reddot | ${titleSegment}`;
+    document.title = `NexPost | ${titleSegment}`;
     }, [feedName]);
 
     // Determine the current feed name for the API calls, defaulting to 'all'.
