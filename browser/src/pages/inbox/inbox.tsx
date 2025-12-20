@@ -3,11 +3,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import avatar from "../../assets/avatar.png";
 import useAuth from "../../components/AuthContext";
 import Svg from "../../components/Svg";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
+
+const DEFAULT_AVATAR = "/default_avatar.png";
 
 // Types and definition
 // -------------------------
@@ -83,7 +84,7 @@ export function Inbox() {
               }`}
             >
               <img
-                src={message.sender.avatar || avatar}
+                src={message.sender.avatar || DEFAULT_AVATAR}
                 className="object-cover w-14 h-14 rounded-full"
                 alt=""
               />
@@ -128,7 +129,7 @@ export function Inbox() {
             }`}
           >
             <img
-              src={message.sender.avatar || avatar}
+              src={message.sender.avatar || DEFAULT_AVATAR}
               className="object-cover w-14 h-14 rounded-full"
               alt=""
             />
@@ -244,7 +245,7 @@ export function Chat({ sender, setCurChat, newChat = false }: ChatProps) {
       <div className="flex justify-between items-center p-3 mx-2 border-b-2">
         <div className="flex items-center space-x-4">
           <img
-            src={sender.avatar || avatar}
+            src={sender.avatar || DEFAULT_AVATAR}
             alt=""
             className="object-cover w-14 h-14 rounded-full"
           />
