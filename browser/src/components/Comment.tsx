@@ -3,11 +3,12 @@ import Markdown from "markdown-to-jsx";
 import { FC, useRef, useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import useComment from "../hooks/useComment";
-import avatar from "../assets/avatar.png";
 import { timeAgo } from "../pages/Post/utils";
 import useAuth from "./../components/AuthContext";
 import Svg from "./Svg";
 import Vote from "./Vote";
+
+const DEFAULT_AVATAR = "/default_avatar.png";
 
 // Type Definitions
 // ----------------------
