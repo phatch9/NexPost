@@ -1,1 +1,0 @@
-# init package for subpost module
